@@ -1,23 +1,10 @@
-pipeline {
-
-  agent { label 'kube-pod-front' }
-
-  stages {
-
+node {
+    
     stage('Checkout Source') {
-      steps {
-        git 'https://github.com/asarutv/playjenkins.git'
-      }
+        git 'https://github.com/asarutv/playjenkins'
     }
 
-    stage('Deploy App') {
-      steps {
-        script {
-          kubernetesDeploy(configs: "myweb.yaml", kubeconfigId: "KUBECONFIG")
-        }
-      }
+    stage("Deploy To Kuberates Cluster"){
+        sh 'kubectl apply -f myweb.yaml'
     }
- 
-  }
-
 }
